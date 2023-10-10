@@ -1,0 +1,56 @@
+{
+  "buildCommand" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildAndRun"
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "af8298cc23318654a19d53aada9a6c8f83108bac956c3ca9c5412e8730a0e58b"
+    }
+  ],
+  "containerPath" : "/Users/heejeong/Desktop/GitHub/TAMK/C++/Class/Arvosana2/Arvosana2.xcodeproj",
+  "continueBuildingAfterErrors" : false,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "macosx",
+      "sdk" : "macosx14.0",
+      "sdkVariant" : "macos",
+      "supportedArchitectures" : [
+        "arm64e",
+        "arm64",
+        "x86_64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/heejeong/Desktop/GitHub/TAMK/C++/Class/Arvosana2/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/heejeong/Desktop/GitHub/TAMK/C++/Class/Arvosana2/Build/Products",
+      "derivedDataPath" : "/Users/heejeong/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/heejeong/Library/Developer/Xcode/DerivedData/Arvosana2-hjmepcycxrvfnebiuctkiktxutmt/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/heejeong/Library/Developer/Xcode/DerivedData/Arvosana2-hjmepcycxrvfnebiuctkiktxutmt/Index.noindex/PrecompiledHeaders",
+      "pchPath" : "/Users/heejeong/Desktop/GitHub/TAMK/C++/Class/Arvosana2/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "NO"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}
