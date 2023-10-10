@@ -1,2 +1,0 @@
-Target dependency graph (1 target)
-Target 'Arvosana2' in project 'Arvosana2' (no dependencies)

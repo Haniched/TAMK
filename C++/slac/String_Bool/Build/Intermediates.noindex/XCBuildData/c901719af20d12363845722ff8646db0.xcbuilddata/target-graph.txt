@@ -1,0 +1,2 @@
+Target dependency graph (1 target)
+Target 'String_Bool' in project 'String_Bool' (no dependencies)
