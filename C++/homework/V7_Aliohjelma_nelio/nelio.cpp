@@ -11,7 +11,7 @@
 //create a function
 void Nelio (){
     
-    int luku ( 0 );
+    int luku;
     std::cout << "Anna luku, jonka nelio lasketaan: ";
     std::cin >> luku;
     
@@ -24,4 +24,4 @@ void Nelio (){
 int main (){
     Nelio();
     return 0;
-}
+}   
