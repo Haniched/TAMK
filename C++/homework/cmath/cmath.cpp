@@ -1,12 +1,12 @@
 #include <iostream>
-#include <cmath>
+#include <cmath>    
 
 int main (){
     using namespace std;
     
     int luku;
     float tulos;
-    bool lopeta { false };
+    bool lopeta = false ;
     
     do {
         
