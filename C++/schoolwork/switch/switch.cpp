@@ -1,7 +1,6 @@
 // for- loops Noppa peli
 
 #include <iostream>
-
 #include <cstdlib>
 
   
