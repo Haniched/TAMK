@@ -1,1 +1,0 @@
-//  Aliohjelma - matkahinta
