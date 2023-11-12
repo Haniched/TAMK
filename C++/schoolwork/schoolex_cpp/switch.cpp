@@ -3,8 +3,6 @@
 #include <iostream>
 #include <cstdlib>
 
-  
-
 int main() {
 
      srand((unsigned) time(NULL));
