@@ -89,14 +89,18 @@ bool Vieras_tarkistus (const std::string& tiedosto, const std::string& nimi, int
     std::fstream Tieto (tiedosto, std::fstream::in);
     int rivi = 0;
     std::string line;
-    while (std::getline (Tieto, line, ',')){
+    try {
+        while (std::getline (Tieto, line, ',')){
         rivi++;
         if (line.find(nimi) != std::string::npos){
             Tieto.seekg (0, std::ios::end);
             if (Tieto.tellg () <= n){
-                return true;
-            }  
+                return true;  
+            }
         }
+        }
+    } catch (const std::exception&) {
+        return false;
     }
     std::cout << "Pahoillaan, varattavien huoneiden määrä on täynnä." << std::endl;
     return false;
