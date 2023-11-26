@@ -29,9 +29,9 @@ bool vahvistus (std::string viesti){
         std::cout << viesti << " vastaa Y tai N (Joo tai Ei): ";
         std::cin >> vastaus;
         if (vastaus == "Y" || vastaus == "y"){return true;}
-        else if (vastaus == "N" || vastaus == "n"){return false;}
         else {std::cerr << "Hmm... onko se joo vai ei? Vastaa uudelleen!" << std::endl;}
-    } while (true && false);
+    } while (vastaus == "N" || vastaus == "n");
+    return false;
 }
 
 // huoneen numeron määrittely
@@ -47,35 +47,34 @@ int puoli (int n){
 }
 
 // tiedoston tarkistus, onko se auki vai ei
-void tarkistus (const std::string& tiedosto, std::ifstream input){
+void tarkistus (const std::string& tiedosto, std::ifstream& input){
     input.open (tiedosto);
     if (!input.is_open()){tulosta_virhe(tiedosto);}
 }
 
-void kirjoitus_numero (const std::string& tiedosto, int& n){
+void kirjoitus_numero (const std::string& tiedosto, int n){
     // tarkistaa tiedoston sisältö
     std::ifstream input (tiedosto);
-     if (input.is_open){
+    if (input.is_open()){
         input.seekg (0, std::ios::end);
         // kirjoita tiedostoon
         std::ofstream out;
         if (input.tellg () < 0){
-            out (tiedosto); 
+            out.open (tiedosto); 
             out << n;
         } /*else if (input.tellg >= 3){
             out (tiedosto, std::ios::app);
             out << n;
         }*/
-     else {tulosta_virhe(tiedosto);}
-    }
-   
+        out.close ();
+    } else {tulosta_virhe(tiedosto);}
 };
 
 void lukema_numero (const std::string& tiedosto, std::string lause){
     std::ifstream in (tiedosto);
     tarkistus (tiedosto, in);
     int n;
-    while (std::getline (in,n)){
+    while (in >> n) {
         std::cout << n << lause << std::endl;
     }
 };
@@ -87,38 +86,28 @@ struct Vieras {
 
 
 bool Vieras_tarkistus (const std::string& tiedosto, const std::string& nimi, int n){
-    std::fstream Tieto (tiedosto, std::ios::end);
+    std::fstream Tieto (tiedosto, std::fstream::in);
     int rivi = 0;
     std::string line;
     while (std::getline (Tieto, line, ',')){
         rivi++;
-        if (Tieto.find(nimi) != std::string::npos){
+        if (line.find(nimi) != std::string::npos){
             Tieto.seekg (0, std::ios::end);
             if (Tieto.tellg () <= n){
                 return true;
-            } else { 
-                std::cout << "Pahoillaan, varattavien huoneiden määrä on täynnä." << std::endl;
-                return false;
-            }
+            }  
         }
     }
+    std::cout << "Pahoillaan, varattavien huoneiden määrä on täynnä." << std::endl;
+    return false;
 }
 
-
-
-void varaus (std::string tiedosto, Vieras) {
+void varaus (std::string tiedosto, Vieras vieras) {
     using namespace std;
     fstream out;
     out.open (tiedosto, ios::out | ios::app);
 
-    Vieras vieras;
-
-    array syotto_vieras <string, 4> {
-        "Sukunimesi: ", 
-        "Huoneen tyyppi: ", 
-        "Huoneen määrä: ", 
-        "Öiden määrä: ";
-    }
+    array<string, 4>syotto_vieras = {"Sukunimesi: ", "Huoneen tyyppi: ", "Huoneen määrä: ", "Öiden määrä: "};
 
     if (Vieras_tarkistus (tiedosto, vieras.nimi, vieras.huoneenmaara) == true){ 
         cout << syotto_vieras [0];
@@ -130,13 +119,13 @@ void varaus (std::string tiedosto, Vieras) {
         cout << syotto_vieras [3];
         cin >> vieras.yonmaara;
         
-        out >> vieras.nimi << ", "
-        >> vieras.huonetyyppi << ", "
-        >> vieras.huoneenmaara << ", "
-        >> vieras.yonmaara << ", "
+        out << vieras.nimi << ", "
+        << vieras.huonetyyppi << ", "
+        << vieras.huoneenmaara << ", "
+        << vieras.yonmaara << ", ";
         rivi ();
     } else {
-        Vieras_tarkistus (tiedosto, vieras.nimi, vieras.huoneenmaara) == false;
+        Vieras_tarkistus (tiedosto, vieras.nimi, vieras.huoneenmaara);
     }
 };
 

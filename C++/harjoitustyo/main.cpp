@@ -24,7 +24,7 @@ int main (){
     tulosta ("Aika paljon huoneetta Hotelli Californiassa on.", true);
     
     // 
-    kirjoitus_numero ("hotelli.txt", satunnainen_huoneetmaara())
+    kirjoitus_numero ("hotelli.txt", satunnainen_huoneetmaara());
     lukema_numero ("hotelli.txt", " huoneita ovat saatavilla.");
     rivi ();
     tulosta ("Californiassa on yhden tai kahden hengen huoneita.", true);
@@ -41,12 +41,13 @@ int main (){
         rivi ();
     }
 
-    if (!vahvistus ("Haluatko varata?")) {
+    if (vahvistus ("Haluatko varata?")) {
         std::cout << "Selvä, toivotaan nähdämme uudestaan!" << std::endl;
         return 0;
     } 
     
+    Vieras vieras;
     tulosta ("Syötä varajan tietoa alle", true);
-    varaus ("varaus.csv", Vieras);
+    varaus ("varaus.csv", vieras);
     
 }
