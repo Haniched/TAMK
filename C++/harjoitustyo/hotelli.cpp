@@ -1,8 +1,4 @@
-
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <array>
+#include "hotelli.hpp"
 
 void rivi (){
     std::cout << '\n';
@@ -19,7 +15,8 @@ void tulosta (std::string t, int n, bool RIVI){
 };
 
 void tulosta_virhe (std::string tiedoston_nimi){
-    std::cerr << "VIRHE: Tiedostoa " << tiedoston_nimi << " ei voitu avata." << std::endl;
+    std::cerr << "VIRHE: Tiedostoa '" << tiedoston_nimi << "' ei voitu avata." << std::endl;
+    exit (EXIT_FAILURE);
 };
 
 bool vahvistus (std::string viesti){
@@ -29,6 +26,7 @@ bool vahvistus (std::string viesti){
         std::cout << viesti << " vastaa Y tai N (Joo tai Ei): ";
         std::cin >> vastaus;
         if (vastaus == "Y" || vastaus == "y"){return true;}
+        else if (vastaus == "N" || vastaus == "n"){return false;}
         else {std::cerr << "Hmm... onko se joo vai ei? Vastaa uudelleen!" << std::endl;}
     } while (vastaus == "N" || vastaus == "n");
     return false;
@@ -78,12 +76,6 @@ void lukema_numero (const std::string& tiedosto, std::string lause){
         std::cout << n << lause << std::endl;
     }
 };
-
-struct Vieras {
-    std::string nimi, huonetyyppi;
-    int huoneenmaara, yonmaara;
-};
-
 
 bool Vieras_tarkistus (const std::string& tiedosto, const std::string& nimi, int n){
     std::fstream Tieto (tiedosto, std::fstream::in);

@@ -1,9 +1,4 @@
-#include "hotelli.cpp"
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include <vector>
+#include "hotelli.hpp"
 
 void alkuteksti() {
     tulosta ("Terveltuloa Hotelli Californiaan!\nOnpas ihana paikka.\n", true);
@@ -41,7 +36,7 @@ int main (){
         rivi ();
     }
 
-    if (vahvistus ("Haluatko varata?")) {
+    if (!vahvistus ("Haluatko varata?")) {
         std::cout << "Selvä, toivotaan nähdämme uudestaan!" << std::endl;
         return 0;
     } 
