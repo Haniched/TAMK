@@ -21,7 +21,6 @@ void tulosta_virhe (std::string tiedoston_nimi){
 
 bool vahvistus (std::string viesti){
     std::string vastaus;
-
     do {
         std::cout << viesti << " vastaa Y tai N (Joo tai Ei): ";
         std::cin >> vastaus;
@@ -32,40 +31,40 @@ bool vahvistus (std::string viesti){
     return false;
 }
 
-// huoneen numeron määrittely
-int huonenumerot (int& num){
+// hotelli huoneiden satunnainen parillinen luku
+int satunnainen_huoneetmaara (){
+    static std::random_device rd ();
+    static std::default_random_engine rand ();
+    static std::uniform_int_distribution <int> kokonais {40 , 300}
+
+}
+
+// huoneen numeron määrittely 
+// array가 필요할 것 같다
+void huonenumerot (int& num){
     int huoneen_numero = ((num/10)+1)*100 + (num%10);
     if (num/10){return huoneen_numero++;}
     return huoneen_numero;
 }
 
-int puoli (int n){
-    n = n / 2;
-    return n;
-}
-
-// tiedoston tarkistus, onko se auki vai ei
+// tarkistaa tiedoston sisältö
 void tarkistus (const std::string& tiedosto, std::ifstream& input){
     input.open (tiedosto);
-    if (!input.is_open()){tulosta_virhe(tiedosto);}
-}
-
-void kirjoitus_numero (const std::string& tiedosto, int n){
-    // tarkistaa tiedoston sisältö
-    std::ifstream input (tiedosto);
     if (input.is_open()){
         input.seekg (0, std::ios::end);
-        // kirjoita tiedostoon
-        std::ofstream out;
-        if (input.tellg () < 0){
-            out.open (tiedosto); 
-            out << n;
-        } /*else if (input.tellg >= 3){
-            out (tiedosto, std::ios::app);
-            out << n;
-        }*/
-        out.close ();
-    } else {tulosta_virhe(tiedosto);}
+    }
+    else {tulosta_virhe(tiedosto)};
+}
+
+// kirjoita tiedostoon
+void kirjoitus_numero (const std::string& tiedosto, int n){
+    std::ofstream out;
+    out.open (tiedosto); 
+    out << n;
+    /*if (input.tellg >= 3){
+        out (tiedosto, std::ios::app);
+        out << n;
+    }*/
 };
 
 void lukema_numero (const std::string& tiedosto, std::string lause){
@@ -83,13 +82,13 @@ bool Vieras_tarkistus (const std::string& tiedosto, const std::string& nimi, int
     std::string line;
     try {
         while (std::getline (Tieto, line, ',')){
-        rivi++;
-        if (line.find(nimi) != std::string::npos){
+            rivi++;
+            if (line.find(nimi) != std::string::npos){
             Tieto.seekg (0, std::ios::end);
-            if (Tieto.tellg () <= n){
+                if (Tieto.tellg () <= n){
                 return true;  
+                }
             }
-        }
         }
     } catch (const std::exception&) {
         return false;

@@ -4,33 +4,25 @@ void alkuteksti() {
     tulosta ("Terveltuloa Hotelli Californiaan!\nOnpas ihana paikka.\n", true);
 };
 
-// hotelli huoneiden satunnainen parillinen luku
-int satunnainen_huoneetmaara (){
-    int huoneetmaara = rand() % 301+40;
-    if (huoneetmaara % 2 == 0) {return huoneetmaara;}
-    else {return huoneetmaara++;}
-    return huoneetmaara;
-}
+
+/* huoneet, joka alku puolet ovat yksihenkinen huone ja loput ovat pari henkilön
+    std::vector <int> huonetyyppi;
+*/
 
 int main (){
     
     rivi(); alkuteksti();
     
     tulosta ("Aika paljon huoneetta Hotelli Californiassa on.", true);
-    
-    // 
+    // hotellin huoneiden määrän kirjoitus 
     kirjoitus_numero ("hotelli.txt", satunnainen_huoneetmaara());
     lukema_numero ("hotelli.txt", " huoneita ovat saatavilla.");
     rivi ();
     tulosta ("Californiassa on yhden tai kahden hengen huoneita.", true);
 
-    // huoneet, joka alku puolet ovat yksihenkinen huone ja loput ovat pari henkilön
-    std::vector <int> huonetyyppi;
-    int yksi = puoli(satunnainen_huoneetmaara());
+    int yksi = satunnainen_huoneetmaara()/2;
     int pari = satunnainen_huoneetmaara()-yksi;
-    huonetyyppi.push_back (yksi);
-    huonetyyppi.push_back (pari);
-    
+
     for (int i : huonetyyppi){
         kirjoitus_numero ("hotelli.txt", huonenumerot(i));
         rivi ();
