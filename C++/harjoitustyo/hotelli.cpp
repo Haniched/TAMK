@@ -32,23 +32,33 @@ bool vahvistus (std::string viesti){
 }
 
 // hotelli huoneiden satunnainen parillinen luku
-int satunnainen_huoneetmaara (){
+int satunnainen_huoneetmaara(){
     static std::random_device rd ();
     static std::default_random_engine rand ();
-    static std::uniform_int_distribution <int> kokonais {40 , 300}
-
+    static std::uniform_int_distribution <int> randomi {40 , 300};
+    int kokonais = randomi (rand);
+    if (kokonais % 2 != 0){return kokonais+=1;}
+    return kokonais;
 }
 
+std::vector <int> yksih;
+yksih.resize (satunnainen_huoneetmaara()/2);
+std::vector <int> parih;
+parih.resize (satunnainen_huoneetmaara()-yksih.size());
+
 // huoneen numeron määrittely 
-// array가 필요할 것 같다
-void huonenumerot (int& num){
-    int huoneen_numero = ((num/10)+1)*100 + (num%10);
-    if (num/10){return huoneen_numero++;}
+// huoneen vapauksesta kannattaa ottaa huolta 
+int huonenumerot (const std::vector<int>& tyyppi){
+    int huoneen_numero;
+    for (int n : tyyppi){
+        huoneen_numero = ((tyyppi[n]/10)+1)*100 + (tyyppi[n]%10);
+        if (tyyppi[n]/10){huoneen_numero++;}
+    }
     return huoneen_numero;
 }
 
 // tarkistaa tiedoston sisältö
-void tarkistus (const std::string& tiedosto, std::ifstream& input){
+void tiedoston_tarkistus (const std::string& tiedosto, std::ifstream& input){
     input.open (tiedosto);
     if (input.is_open()){
         input.seekg (0, std::ios::end);
@@ -69,7 +79,7 @@ void kirjoitus_numero (const std::string& tiedosto, int n){
 
 void lukema_numero (const std::string& tiedosto, std::string lause){
     std::ifstream in (tiedosto);
-    tarkistus (tiedosto, in);
+    tiedoston_tarkistus (tiedosto, in);
     int n;
     while (in >> n) {
         std::cout << n << lause << std::endl;

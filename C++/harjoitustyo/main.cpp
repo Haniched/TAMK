@@ -20,8 +20,6 @@ int main (){
     rivi ();
     tulosta ("Californiassa on yhden tai kahden hengen huoneita.", true);
 
-    int yksi = satunnainen_huoneetmaara()/2;
-    int pari = satunnainen_huoneetmaara()-yksi;
 
     for (int i : huonetyyppi){
         kirjoitus_numero ("hotelli.txt", huonenumerot(i));
