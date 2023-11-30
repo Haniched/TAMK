@@ -134,4 +134,12 @@ void varaus (std::string tiedosto, Vieras vieras) {
     }
 };
 
+std::array <double, 3>& prosentti = {0, 0.1, 0.2};
+int alennus (int& hinta){
+    int alennus_num = std::rand();
+    RAND_MAX = 2;
+    hinta*= prosentti [alennus_num];
+    return hinta;
+}
+
 
