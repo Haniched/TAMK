@@ -40,7 +40,6 @@ int satunnainen_huoneetmaara(){
     return kokonais;
 }
 
-
 // huoneen vapauksesta kannattaa ottaa huolta 
 int huonenumero(int& num) {
     int huoneen_numero = ((num / 10) + 1) * 100 + (num % 10);
@@ -57,13 +56,14 @@ bool tiedoston_tarkistus (const std::string& tiedosto){
     if (file.is_open()) {
         return true;
     }
+    tulosta_virhe();
     return false;
 }
 
 void kirjoitus_tiedot (const std::string &tiedosto, std::vector <huonetiedot> &tieto, int &MAX){
     std::ofstream out (tiedosto);
     tiedoston_tarkistus (tiedosto);
-    for (int i = 0; i <= MAX; i++){
+    for (int i = 1; i <= MAX; i++){
         out << tieto[i].hnum << ','
             << tieto[i].yksi_pari << ','
             << tieto[i].vieras << '\n';
@@ -71,35 +71,16 @@ void kirjoitus_tiedot (const std::string &tiedosto, std::vector <huonetiedot> &t
 };
 
 int lukema_numero (const std::string& tiedosto){
+    int numero = 0;
+    std::string rivi;
     std::ifstream in (tiedosto);
     tiedoston_tarkistus (tiedosto);
-    int num;
-    in >> num;
-    return num;
-}
-/*
-bool Vieras_tarkistus (const std::string& tiedosto){
-    std::fstream Tieto (tiedosto, std::fstream::in);
-    int rivi = 0;
-    std::string line;
-    try {
-        while (std::getline (Tieto, line, ',')){
-            rivi++;
-            if (line.find(nimi) != std::string::npos){
-                Tieto.seekg (0, std::ios::end);
-                if (Tieto.tellg () <= n){
-                return true;  
-                }
-            }
-        }
-    } catch (const std::exception&) {
-        return false;
+    while (std::getline(in, rivi)){
+        ++numero;
     }
-    std::cout << "Pahoillaan, varattavien huoneiden määrä on täynnä." << std::endl;
-    return false;
+    return numero;
 }
-*/
-
+// 사용자 정보를 받는 함수
 void varaus (Vieras &vieras) {
     using namespace std;
 
@@ -114,6 +95,26 @@ void varaus (Vieras &vieras) {
     cout << syotto_vieras [3];
     cin >> vieras.yonmaara;
 };
+
+// 여기서 사용자가 입력한 이름을 읽고, 출력해야 한다?
+// 아님 확인만 한다
+// https://stackoverflow.com/questions/12463750/c-searching-text-file-for-a-particular-string-and-returning-the-line-number-wh
+bool Vieras_tarkistus (const std::string& tiedosto, Vieras& vieras){
+    std::ifstream in (tiedosto);
+    try {
+        for (std::string line; std::getline (in, line, ',');){
+            line++;
+            if (vieras.nimi == line){
+                return true;  
+            }
+        }
+    } catch (const std::exception&) {
+        tiedoston_tarkistus();
+    }
+    return false;
+}
+
+
 
 void kirjoita_syotto (const std::string &tiedosto, Vieras &vieras){
     std::ofstream out {tiedosto};

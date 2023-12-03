@@ -9,7 +9,6 @@
 #include <random>
 
 #define HUONEINFO_FILE "hotelli.txt"
-#define VARAJA_FILE "varaus.csv"
 
 struct Vieras {
     std::string nimi, huonetyyppi;
