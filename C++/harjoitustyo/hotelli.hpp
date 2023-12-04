@@ -34,9 +34,6 @@ int satunnainen_huoneetmaara ();
 // huoneen numeron määrittely 
 int huonenumero (int& num);
 
-// huoneentyypin määrittely
-// void huoneentyyppi (int kokonaismaara);
-
 // kirjoitettu tiedoston sisällön tarkistus
 bool tiedoston_tarkistus (const std::string& tiedosto);
 
@@ -49,7 +46,7 @@ int lukema_numero (const std::string& tiedosto);
 void varaus (Vieras &vieras);
 
 // Tarkistaa, että onko käyttäjän tieto on jo talennettu hotellin systeemiin
-bool Vieras_tarkistus (const std::string& tiedosto, const std::string& nimi, int n);
+bool Vieras_tarkistus (const std::string &tiedosto, Vieras &vieras);
 
 // alennus
 int alennus (int& hinta);

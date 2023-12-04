@@ -64,9 +64,9 @@ void kirjoitus_tiedot (const std::string &tiedosto, std::vector <huonetiedot> &t
     std::ofstream out (tiedosto);
     tiedoston_tarkistus (tiedosto);
     for (int i = 1; i <= MAX; i++){
-        out << tieto[i].hnum << ','
+        out << '\n' 
+            << tieto[i].hnum << ','
             << tieto[i].yksi_pari << ','
-            << tieto[i].vieras << '\n';
     }
 };
 
@@ -84,7 +84,7 @@ int lukema_numero (const std::string& tiedosto){
 void varaus (Vieras &vieras) {
     using namespace std;
 
-    array<string, 4> syotto_vieras = {"sukunimesi: ", "huoneen tyyppi: ", "huoneen määrä: ", "öiden määrä: "};
+    array<string, 4> syotto_vieras = {"sukunimesi: ", "huoneen tyyppi:  ", "huoneen määrä: ", "öiden määrä: "};
 
     cout << syotto_vieras [0];
     cin >> vieras.nimi;
@@ -96,30 +96,33 @@ void varaus (Vieras &vieras) {
     cin >> vieras.yonmaara;
 };
 
+
+void kirjoita_syotto (const std::string &tiedosto, Vieras &vieras){
+    std::ofstream out {tiedosto, std::ios::app};
+    tiedoston_tarkistus (tiedosto);
+    out << vieras.nimi << ','
+        << vieras.huoneenmaara << ','
+        << vieras.yonmaara << ',';
+}
+
 // 여기서 사용자가 입력한 이름을 읽고, 출력해야 한다?
 // 아님 확인만 한다
 // https://stackoverflow.com/questions/12463750/c-searching-text-file-for-a-particular-string-and-returning-the-line-number-wh
 bool Vieras_tarkistus (const std::string& tiedosto, Vieras& vieras){
     std::ifstream in (tiedosto);
     try {
-        for (std::string line; std::getline (in, line, ',');){
-            line++;
-            if (vieras.nimi == line){
-                return true;  
+        while (std::getline (tiedosto, line)){
+            if (line.find(vieras.nimi) != line.npos){
+                return true;
             }
         }
     } catch (const std::exception&) {
-        tiedoston_tarkistus();
+        tulosta_virhe();
     }
     return false;
 }
 
 
-
-void kirjoita_syotto (const std::string &tiedosto, Vieras &vieras){
-    std::ofstream out {tiedosto};
-    tiedoston_tarkistus (tiedosto);
-}
 
 std::array <double, 3> prosentti = {0, 0.1, 0.2};
 
