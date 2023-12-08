@@ -1,8 +1,4 @@
-101,s,hani,1
-102,s,gani,1
-103,s,cani,1
-104,s,hani,2
-105,d,wani,2
-106,d,
-107,d,
-108,d,
+101,s,kabi,1
+102,s,wari,1
+103,d,kabi,1
+104,d,wano,2

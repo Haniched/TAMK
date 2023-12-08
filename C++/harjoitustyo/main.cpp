@@ -17,8 +17,9 @@ int main (){
         // 방 갯수 사이즈의 vector 가 필요하다.
         // 이 vector에는 여러 정보가 담겨야 한다.
         // 1. 방 번호
-        // 2. 게스트
-        // 3. 싱글룸 또는 더블룸
+        // 2. 싱글룸 또는 더블룸
+        // 3. 게스트
+        // 4. 몇 박
         std::vector <huonetiedot> huoneet;
 
         // 1. 방 갯수를 설정 (랜덤으로)
@@ -31,9 +32,12 @@ int main (){
         for (int i = 0; i < kokonaismaara; i++) {
             huoneet[i].hnum = huonenumero(i);
         }   
+
         // 3. 1인실 2인실 배정 (파일에 쓰기 직전에) 
         // 3. Yksihenkilön/kaksihenkikön huoneen määräminen
-        // jos kokonaismaara = 80, s = 0-39
+
+        // jos kokonaismaara = 80, 
+        // s = 0-39
         for (int i = 0; i < kokonaismaara / 2; i++){
             huoneet[i].tyyppi = 's';
         }
@@ -45,13 +49,13 @@ int main (){
         // 4. 쓴다. 
         // 4. Kirjoita ylä olevat hotellien tiedot hotelli.txt tiedostoon.
         kirjoitus_tiedot (TIETOKANTA, huoneet, kokonaismaara);
-    }
 
-    // 파일이 존재 할 경우, 호텔이 가지고 있는 정보를 출력한다. 
-    else {
+    } else if (in.is_open()){
+        // 파일이 존재 할 경우, 호텔이 가지고 있는 정보를 출력한다. 
         int kokonais = lukema_numero(TIETOKANTA);
         tulosta ("Hotellissamme on ", kokonais, " huoneetta.\n", true);
-    }
+
+    } else {tulosta_virhe(TIETOKANTA);}
 
     /* 사용자의 예약 여부 의사를 확인한다
     if (!vahvistus ("Haluatko varata? ")) {
@@ -64,68 +68,48 @@ int main (){
 
     do {
          // 사용자가 정보를 입력한다
-        tulosta ("Syötä alle...", true);
+        tulosta ("Syota alle...", true);
+        // 이미 예약한 사용자인지 이름을 파일에서 찾고, 있다면 출력하기
+        if (!varaus_nimi(vieras1)){
+            break;
+        }
         varaus (vieras1);
         rivi ();
 
-
-        // 싱글룸 101호 2박
-        // 싱글롬 102호 3박
-        // 당신은 위와같이 방들을 예약하셨습니다
-        // 더 예약하시겠습니까?
-
-        // 이미 예약한 사용자인지 파일에서 찾고, 있다면 출력하기
-        if (varattu (vieras1)){
-            if (!vahvistus("Haluatko pitää syötetty varauksesi? ")){
-                std::cout << "\n";
-                if (!vahvistus("Jos haluat varata uudella tiedolla, paina [Y].\nJos haluat vaan lopettaa tämä sessio, paina [N]\n")){
-                    lopputeksti();
-                    return 0;
-                } else {
-                    tulosta ("Syötä alle...", true);
-                    varaus (vieras1);
-                    rivi();
-                }
-            }
-        }
-
-
-        /*if (예약함) {
-            출력 101,s,nimi,2 Olet vrautettu nimellä nimi, s tyyppinen huone numero 101, 3 yötä. 
-            if (!더 예약할 건지 물어봄())
-                종료
-        }*/
-
         // 예약가능한 방이 있는지 확인한다
-        std::ifstream in (TIETOKANTA);
-        std::string line;
-        bool taysi = false;
-        while (std::getline(in, line)){
-            if ((get_nth_column(line, 1)) == vieras1.tyyppi && (get_nth_column(line, 2)) != "") {
-                if (vieras1.tyyppi == "s"){
-                    tulosta ("Meidän yhden hengen huoneet ovat täynnä.", true); 
-                } else {
-                    tulosta ("Meidän kahden hengen huoneet ovat täynnä.", true); 
-                }
-            } else {
-                taysi = true;
-            }
-        }
-        
-        if (taysi) {
-            kirjoitus_varaus (vieras1);
-            // 가격 출력 tulostaa hinta
+        if (taysi(vieras1) == "vapaa") {
+            
+             // 파일에 적기 kirjoita tiedostoon syotetty tiedot
+            kirjoitus_varaus (vieras1);   
+
             int laskusi = lasku(vieras1);
+            // 가격 출력 tulostaa hinta
             std::cout << "Laskusi on " << laskusi << " euroa.\n";
-            std::cout << "\nVarauskesi nimellä '" << vieras1.nimi << "' on tehty.\n" << std::endl;
+            rivi();
+            std::cout << "Varauskesi nimellä '" << vieras1.nimi << "' on tehty." << std::endl;
             kokolasku = kokolasku + laskusi;
+            
+        } else if (taysi(vieras1) == "toinen vapaa"){
+            if (vieras1.tyyppi == "s"){
+                tulosta ("Meidän single huoneet ovat täynnä.", true); 
+            } else if (vieras1.tyyppi == "d"){
+                tulosta ("Meidän double huoneet ovat täynnä.", true); 
+            } 
+            // tulosta ("Syotta joku toiseen tyyppin huone.", true);
+        } else {
+            tulosta ("Hotellin kaikki huoneet ovat varattu.", true);
+            break;
         }
+        
+        rivi();
 
-        
-        
     } while (vahvistus("Haluatko varata lisää? "));
+    
+    rivi ();
 
-    tulosta ("\nYhteensä ", kokolasku, " euroa.\n", true);
+    if (kokolasku > 0){
+        std::cout << "Yhteensä " << alennushinta(kokolasku) << " euroa.\n" << std::endl;
+    }
 
     lopputeksti();
 
