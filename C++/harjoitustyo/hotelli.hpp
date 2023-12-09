@@ -10,10 +10,10 @@
 #include <array>
 #include <vector>
 #include <cstdlib>
-#include <random>
-#include <thread>
-#include <chrono>
-#include <limits>
+#include <random> // c++20
+#include <thread> // display_slowly
+#include <chrono> // display_slowly
+// #include <limits>
 
 #define TIETOKANTA "hotelli.txt"
 #define TALLENNUS ".hotelli.txt"
@@ -29,13 +29,12 @@ struct huonetiedot {
     std::string nimi, tyyppi;
 };
 
-static std::string sym_to_typ(std::string tyyppi);
-
 // funktiot, does not use file input/output stream
 void rivi();
 void tulosta (std::string t, bool RIVI);
-void tulosta (std::string t, int &n, std::string s, bool RIVI);
 void tulosta_virhe (std::string tiedoston_nimi);
+
+void display_slowly (const std::string &text);
 
 // Y/N syotto, vahvistuksen varten 
 bool vahvistus (std::string viesti);
@@ -58,7 +57,7 @@ bool onko_varattu (Vieras &vieras);
 bool varaus_nimi (Vieras &vieras);
 void varaus (Vieras &vieras);
 
-std::string taysi (Vieras &vieras);
+char taysi (Vieras &vieras);
 
 void kirjoitus_varaus (Vieras& vieras);
 

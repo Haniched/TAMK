@@ -11,9 +11,9 @@ std::array<std::string, 4> syotto_vieras = {
 // s를 single로, d를 double로 변환해줌
 static std::string sym_to_typ (std::string tyyppi) {
     if (tyyppi == "s"){
-        return "single";
+        return "SINGLE";
     }
-    return "double";
+    return "DOUBLE";
 }
 
 // 랜덤한 할인율을 생성해주는 함수
@@ -38,17 +38,19 @@ void tulosta (std::string t, bool RIVI){
     if (RIVI){rivi();}
 };
 
-void tulosta (std::string t, int& n, std::string s, bool RIVI){
-    // std::cout << __FUNCTION__ << std::endl;
-    std::cout << t << n << s;
-    if (RIVI){rivi();}
-};
-
 void tulosta_virhe (std::string tiedoston_nimi){
     // std::cout << __FUNCTION__ << std::endl;
     std::cerr << "VIRHE: Tiedostoa '" << tiedoston_nimi << "' ei voitu avata." << std::endl;
 };
 
+void display_slowly (const std::string &text){
+    for (const char &ch : text){
+        std::cout << ch << std::flush;
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(20)
+        );
+    }
+};
 
 bool vahvistus (std::string viesti){
     // std::cout << __FUNCTION__ << std::endl;
@@ -56,11 +58,11 @@ bool vahvistus (std::string viesti){
     do {
         std::cout << viesti << "(Y/N): ";
         std::cin >> vastaus;
+        rivi ();
         if (vastaus == "Y" || vastaus == "y"){return true;}
         else if (vastaus == "N" || vastaus == "n"){return false;}
         else {std::cerr << "Vastaa Y tai N:llä.\n" << std::endl; continue;}
     } while (true);
-    rivi ();
     return true;
 }
 
@@ -205,26 +207,57 @@ bool onko_varattu (Vieras &vieras){
 }
 
 // 3. 예약가능한 방이 있는지 확인하는 함수
-std::string taysi (Vieras &vieras){
+char taysi (Vieras &vieras){
     std::ifstream in (TIETOKANTA);
     std::string line;
     if (!in.is_open()){tulosta_virhe(TIETOKANTA);}
-    else {
-        while (in){
-            getline(in, line);
-            if ((get_nth_column(line, 1)) == vieras.tyyppi && 
-                (get_nth_column(line, 2)) == "") {
-                return "vapaa";
-            } else if ((get_nth_column(line, 1)) != vieras.tyyppi && 
-                       (get_nth_column(line, 2)) == ""){
-                return "toinen vapaa";
-            } else {
-                continue;
-            }
+    while (in){
+        getline(in, line);
+        if (get_nth_column(line, 2) == ""){ // JOS nimikentta on tyhja 
+            if (get_nth_column(line, 1) == ""){ // empty line, file reader has been reached till the end, 
+                break; // so no available room
+            } else if (get_nth_column(line, 1) == vieras.tyyppi){ // if (matches with user input room type) 
+                return '1'; 
+                break; // proceed to booking
+            } else if (get_nth_column(line, 1) != vieras.tyyppi){ 
+                if (get_nth_column (line, 2) != ""){
+                    continue;
+                    return '2'; // input room type is all booked alr but not the other one
+                } else {
+                    break;
+                }
+            } 
+        } else {
+            continue; // keep reading
         }
     }
-    return "ei vapaa";
+    return '0';
 }
+
+/* 위의 taysi 로직
+0,1,2,3
+101,s,name,night
+
+맨처음
+d를 넣었을 때,
+2는 비어있으므로, != 이 있는 곳으로 넘어감 get은 s부터 시작
+인풋과 일치하지 않을떄, 
+    그 일치하지 않는 타입이 다 차있는 경우 리턴 2
+    차있지 않은 경우 continue
+
+if [2] (이름) 가 비어있다
+    if [1] (룸 타입)이 비어있다
+        파일의 마지막 비어있는 줄을 읽은 것이므로, 방에 모든 예약이 꽉차있다, 프로그램 종료
+    else if 룸타입이 유저인풋과 일치한다
+        예약 가능
+    else if 룸타입이 유저인풋과 일치 하지 않는다 (여기서문제)
+        이 룸타입은 예약 불가능, 다른 룸타입은 비어있다
+else 계속 읽는다
+
+여기서 생기는 문제는, 맨 처음에 예약을 할 때 더블룸을 한다고 치면, 맨 처음으로 읽는 줄은 당연히... d와 일치하지 않으므로 예약 불가능하다고 나온다 
+읽은 룸타입과 입력한 룸타입과 다르지만 그 뒤가 비어있다면 라인에서 읽은 그 다른 룸타입은 예약가능한거다
+
+*/
 
 // 파일에 옮겨적기 위한 아주 긴긴과정...
 
@@ -284,6 +317,7 @@ int lasku (Vieras& vieras){
     } else if (vieras.tyyppi == "d"){
         hinta = 150*vieras.yo;
     }
+    std::cout << "Laskusi on " << hinta << " euroa.\n";
     return hinta;
 }
 
@@ -292,7 +326,7 @@ int alennushinta (int &hinta){
     float alennus = luo_ale();
 
     if (alennus != 0){
-        std::cout << "saat " << alennus*100 << '%' << " alennusta, ";
+        std::cout << "Saat " << alennus*100 << '%' << " alennusta, ";
     }
     return hinta - (alennus*hinta);
 }
