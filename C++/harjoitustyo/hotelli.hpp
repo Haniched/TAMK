@@ -18,7 +18,7 @@
 #define TIETOKANTA "hotelli.txt"
 #define TALLENNUS ".hotelli.txt"
 
-// elements
+// structit
 struct Vieras {
     std::string nimi, tyyppi;
     int yo;
@@ -29,7 +29,7 @@ struct huonetiedot {
     std::string nimi, tyyppi;
 };
 
-// funktiot, does not use file input/output stream
+// funktiot, jotka eivät käytössä fstream
 void rivi();
 void tulosta (std::string t, bool RIVI);
 void tulosta_virhe (std::string tiedoston_nimi);
@@ -42,10 +42,10 @@ bool vahvistus (std::string viesti);
 // Random number generator
 int satunnainen_huoneetmaara ();
 
-// 룸 넘버 생성하기 (저장된 벡터를 101호, 102호 이런식으로)
+// huoneen numeron määrittäminen
 int huonenumero (int num);
 
-// 여기서부터 file stream library
+// tästä olevat funktiot käytetään file stream library
 
 // Alunperin kirjoittaa tiedostoon ohjelman ensinmaisessa kaynnistossa
 void kirjoitus_tiedot (const std::string &txt, std::vector <huonetiedot> &tieto, int &MAX);
@@ -57,6 +57,7 @@ bool onko_varattu (Vieras &vieras);
 bool varaus_nimi (Vieras &vieras);
 void varaus (Vieras &vieras);
 
+// 
 char taysi (Vieras &vieras);
 
 void kirjoitus_varaus (Vieras& vieras);
