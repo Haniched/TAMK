@@ -1,8 +1,8 @@
 // V9_4
 
 #include <iostream>
-
-int asetalka (int& ika){ // & merkki on reference parameter
+// & merkki on reference parameter
+int asetalka (int& ika){ 
     std::cout << "kerro ikasi: ";
     std::cin >> ika;
     return ika;
