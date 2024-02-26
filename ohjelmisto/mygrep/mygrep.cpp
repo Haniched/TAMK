@@ -11,9 +11,7 @@ std::string ignoreCase(std::string s){
     return s;
 }
 
-int main (int argc, char* argv[]){
-    
-    /*--- INKRAMENTTI 1 ---
+void inputSearch () {
     std::string orgStr, searchStr;
 
     std::cout << "Give a string to search from: ";
@@ -23,32 +21,28 @@ int main (int argc, char* argv[]){
     std::getline (std::cin, searchStr);
 
     size_t match = orgStr.find(searchStr);
+
     if (match != std::string::npos) {
         std::cout << searchStr << " found in " << orgStr << " position " << match << std::endl;
     } else {
         std::cout << searchStr << " NOT found in " << orgStr << std::endl; 
     }
+}
+
+int main (int argc, char* argv[]){
     
-    // argv TEST RUN
-    // for (int i = 0; i < argc; i++){
-    //     std::cout << "argv " << i << argv[i] << std::endl;
-    // } */
+    /*--- INKRAMENTTI 1 ---*/
+    inputSearch();
 
     /*--- INKRAMENTTI 2, 3, 4 ---*/
     std::string file;
     std::string fileSearchStr;
 
-    // check file
-    // if (!in.is_open()) {
-    //     std::cerr << "INVALID FILE" << std::endl;
-    //     return 1;
-    // }
 
-    bool linenumbering;
-    bool occurance;
-    bool reverse;
+    bool linenumbering, occurance, reverse;
+    bool found = false;
     
-    // if there is option selected
+    // if there is option selected, find what options were selected
     if (argc == 4){
        file = argv [3];
        fileSearchStr = argv[2];
@@ -80,22 +74,23 @@ int main (int argc, char* argv[]){
 
     std::ifstream in (file);
     
+    // check file is open
+    if (!in.is_open()) {
+        std::cerr << "An exception occurred. Exception Nr. -1\nCould not find out the size of file '" << file << std::endl;
+        return 1;
+    }
+
     std::string line;
     
-    int linenum = 1;
-    int occurence = 0;
+    // numbers of line and occurences
+    int linenum, occurence, reverseOccurence = 0;
 
     while (getline(in,line)){
         linenum++;
 
-        if (line.find(fileSearchStr) != std::string::npos) {
-            
-            if (line.find(fileSearchStr) == std::string::npos) {
-                if (reverse) {
-                    std::cout << line << std::endl;
-                } else {continue;}
-            }
-
+        // search string line finding
+        if (line.find(fileSearchStr) != std::string::npos && !reverse) {
+        
             if (linenumbering){
                 std::cout << linenum << ": ";
             }
@@ -103,18 +98,43 @@ int main (int argc, char* argv[]){
             if (occurance) {
                 occurence++;
             }
-            
+
             std::cout << line << std::endl;
-
-        } else {continue;}
+            found = true;
+        }
         
+        // reversed line
+        else if ((line.find(fileSearchStr) == std::string::npos) && reverse) {
+            
+            if (linenumbering){
+                std::cout << linenum << ": ";
+            }
+
+            if (occurance) {
+                reverseOccurence++;
+            }
+
+            std::cout << line << std::endl;
+            found = true;
+        }
+
     }
 
-    // occurance output
-    if (occurance) {
+    in.close();
+
+    // occurance output of found line with search string
+    if (occurance && !reverse) {
         std::cout << "Occurrences of lines containing " << '"' << fileSearchStr << '"' << ": " << occurence << std::endl;
-    }
+    } 
     
+    // occurance output of reserved line
+    if (reverse && occurance) {
+        std::cout << "Occurrences of line NOT containing " << '"' << fileSearchStr << '"' << ": " << reverseOccurence << std::endl;
+    }
+
+    if (!found) {
+        std::cerr << "Searched string was not found on document. Check spelling." << std::endl;
+    }
 
     return 0;
 }
