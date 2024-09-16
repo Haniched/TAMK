@@ -11,7 +11,7 @@ public:
     int getLuku();
     void setLuku(int aLukumaara);
 
-    void kerroViimeisenHeitonLukema();
+    void kerroViimeisenHeitonLukema() const;
 private:
     int num[10];
     int lukumaara = 1;

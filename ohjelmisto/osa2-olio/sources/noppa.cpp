@@ -23,7 +23,7 @@ void noppa::setLuku(int aLukumaara) {
     lukumaara = aLukumaara;
 }
 
-void noppa::kerroViimeisenHeitonLukema() {
+void noppa::kerroViimeisenHeitonLukema() const {
     int sum = 0;
     for (int i = 0; i < lukumaara; i++){
         cout << "Noppa" << i+1 << ": " << num[i] << ", ";
