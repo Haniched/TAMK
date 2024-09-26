@@ -1,0 +1,14 @@
+# Variables
+CXX = g++               # Compiler
+CXXFLAGS = -Wall -g     # Compiler flags: -Wall enables all warnings, -g enables debugging symbols
+TARGET = main           # Name of the output executable
+SRC = main.cpp          # Source file
+
+# Target to build the executable
+$(TARGET): $(SRC)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC)
+
+# Clean target to remove the executable
+clean:
+	rm -f $(TARGET)
+	
