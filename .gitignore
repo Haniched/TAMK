@@ -3,3 +3,5 @@
 *.vscode/
 *.dSYM/
 Icon
+metastore_db/
+spark-warehouse/
